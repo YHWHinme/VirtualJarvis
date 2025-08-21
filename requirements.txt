@@ -1,0 +1,8 @@
+kokoro
+IPython==8.19
+numpy
+torch
+faster-whisper
+google-genai
+ollama
+librosa
