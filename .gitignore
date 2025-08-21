@@ -8,3 +8,11 @@ wheels/
 
 # Virtual environments
 .venv
+
+*.wav
+
+# Envs
+.env
+*.env
+# Any markdown files
+*.md
