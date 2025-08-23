@@ -16,3 +16,6 @@ wheels/
 *.env
 # Any markdown files
 *.md
+
+*mp3
+*mp4
