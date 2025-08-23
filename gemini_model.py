@@ -12,8 +12,8 @@ def gemini_chat(input, model= "gemini-2.5-flash"):
         model= model,
         contents = input,
     )
-    return response.text
+    return response
 
 if __name__ == "__main__":
     user_input = sys.argv[1]
-    print(gemini_chat(user_input))
+    print(gemini_chat(user_input).text)

@@ -4,8 +4,11 @@ from gemini_model import gemini_chat
 from tts import speakText
 
 def main_func(input_content):
-    # model_content = ollama_chat(input_content)
-    model_content = gemini_chat(input_content)
+    model_content = ollama_chat(input_content)["message"]["content"]
+    # model_content = gemini_chat(input_content)
+    model_answer = (model_content)
+    print(model_answer)
+
     speakText(model_content)
 
 
