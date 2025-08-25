@@ -15,4 +15,7 @@ wheels/
 # Any multimedia files
 *.wav
 
+# Ignoring any text file
+*.txt
+
 material/
