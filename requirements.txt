@@ -8,3 +8,5 @@ ollama
 librosa
 google-genai
 whisper
+pyttsx3
+SpeechRecognition
