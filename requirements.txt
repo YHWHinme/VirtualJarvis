@@ -7,3 +7,4 @@ google-genai
 ollama
 librosa
 google-genai
+whisper
