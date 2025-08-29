@@ -1,12 +1,7 @@
 kokoro
 IPython==8.19
-numpy
 torch
-faster-whisper
-google-genai
 ollama
 librosa
 google-genai
-whisper
-pyttsx3
 SpeechRecognition
