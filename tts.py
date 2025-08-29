@@ -16,6 +16,7 @@ def speakText(input_text):
     generator = pipeline(input_text, voice='af_heart')
     for i, (gs, ps, audio) in enumerate(generator):
         # print(i, gs, ps)
+        print(type(audio))
         all_audio.extend(audio)
 
     #Idk lol

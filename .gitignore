@@ -16,7 +16,7 @@ wheels/
 *.wav
 
 # Ignoring any text file
-*.txt
+*.md
 
 material/
 
