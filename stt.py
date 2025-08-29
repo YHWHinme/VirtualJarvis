@@ -1,12 +1,8 @@
-
-
 import speech_recognition as sr
 
 
 def recordAudio():
-    listening = True
     recorder =  sr.Recognizer()
-    while listening:
         try:
             with sr.Microphone() as source2:
                 recorder.adjust_for_ambient_noise(source2, duration=0.2)
@@ -18,7 +14,6 @@ def recordAudio():
                 # Transcribed text
                 transcribed_text = recorder.recognize_google(audio2)
                 print("Processing...")
-                listening = False
                 return transcribed_text
         except sr.RequestError as e:
             print(f"Request Error {e}")
@@ -28,12 +23,12 @@ def recordAudio():
             print("Unknown error occured")
 
 
-def saveDisk():
+def savetoDisk():
     with open("recordedTranscribe.txt", "w") as f:
         writable = recordAudio()
         f.write(writable)
 
 if __name__ == "__main__":
-    saveDisk()
+    savetoDisk()
 
 

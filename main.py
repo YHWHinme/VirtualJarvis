@@ -5,33 +5,35 @@ from gemini_model import gemini_chat
 from stt import recordAudio
 from tts import speakText
 
-# TODO: Encapsulate the stt function in main for continous trial
+
+# TODO: Create a class that contains a listening state
+class Jarvis:
+    def __init__(self):
+        self.stt_data = []
+        self.listening = False
+        self.greeting = self.Greet()
+        self.stt = self.transcribeLoop()
+    
+
+    # Greets and turns on listening state
+    def Greet(self):
+        print("Starting engine")
+        self.listening = True
+
+    def transcribeLoop(self):
+        while self.listening:
+            recorded_data = recordAudio()
+            self.stt_data.append(recorded_data)
+            print("\n\nChecking for data")
+
+            if len(self.stt_data) == 0:
+                print("Data is empty, trying again")
+                # TODO: Write to an empty list
+            else:
+                self.toggleListening()
 
 
-def main_func():
-   # Record audio input from the user using the Speech-to-Text (STT) module.
-
-   stt_input = recordAudio(gemini= True)
-   if gemini:
-        # Send the transcribed text to the Gemini model for a response.
-        print("Loading Gemini")
-        model_content = gemini_chat(stt_input).text
-   else:
-        # Send the transcribed text to the ollama model for a response.
-        print("Loading ollama")
-        model_content = ollama_chat(stt_input)["message"]["content"]
-
-   # Clean the model's response by removing markdown characters.
-   stripped_content = model_content.replace('*', '').replace('#', '').replace('-', '')
-    model_answer = (stripped_content)
-
-   # Save the cleaned model response to a text file.
-   with open('model_answer.txt', 'w') as f:
-       f.write(model_answer)
-
-   # Convert the model's response to speech using the Text-to-Speech (TTS) module.
-   speakText(stripped_content)
-
-
-if __name__ == "__main__":
-    main_func()
+                    
+    # Toggles listening state
+    def toggleListening(self):
+        self.listening = not self.listening
