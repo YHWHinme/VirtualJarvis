@@ -12,6 +12,18 @@ def ollama_chat(content):
         },
     ])
     return response
+
+def ollama_chat_stream(content):
+    response = chat(model='gemma3:4b-it-qat', messages=[
+        {
+            'role': 'user',
+            'content': content,
+        },
+    ], stream=True)
+    for chunk in response:
+        if chunk['message']['content']:
+            yield chunk['message']['content']
+
 # or access fields directly from the response object
 
 if __name__ == "__main__":

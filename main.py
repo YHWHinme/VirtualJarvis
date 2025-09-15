@@ -2,9 +2,15 @@
 # to create an interactive voice assistant.
 
 
-from gemini_model import gemini_chat
+from gemini_model import gemini_chat, gemini_chat_stream
 from stt import recordAudio
-from tts import speakText
+from tts import speakText, speakText_chunk
+import os
+
+def is_sentence_end(text):
+    if not text.strip():
+        return False
+    return text.strip()[-1] in '.!?'
 
 
 class Jarvis:
@@ -42,14 +48,34 @@ class Jarvis:
         response = gemini_chat(model_input).text or "Sorry, I couldn't generate a response."
         return response
 
+    def think_stream(self):
+        model_input = self.stt_data
+        for chunk in gemini_chat_stream(model_input):
+            yield chunk
+
     def modelAnswer(self, response: str):
         speakText(response)
 
+    def modelAnswer_stream(self, chunk_generator):
+        buffer = ""
+        for chunk in chunk_generator:
+            buffer += chunk
+            if is_sentence_end(buffer):
+                speakText_chunk(buffer)
+                buffer = ""
+        if buffer:
+            speakText_chunk(buffer)
+
     def Main(self):
+        streaming_mode = os.getenv("STREAMING_MODE", "false").lower() == "true"
         while True:
             self.transcribeLoop()
-            response = self.think()
-            self.modelAnswer(response)
+            if streaming_mode:
+                chunk_gen = self.think_stream()
+                self.modelAnswer_stream(chunk_gen)
+            else:
+                response = self.think()
+                self.modelAnswer(response)
             self.listening = True
 
 
