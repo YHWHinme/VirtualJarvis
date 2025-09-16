@@ -41,3 +41,28 @@
 ### Security
 - Store API keys in environment variables (GEMINI_API_KEY)
 - Never commit sensitive data to repository
+
+## Streaming Audio Implementation
+
+### Overview
+The app supports concurrent streaming audio to reduce AI response wait times. AI text generation, TTS processing (Kokoro), and audio playback (PyAudio) run in parallel using threads and queues. Streaming is enabled by default in `test_pyaudio.py`; toggle via `STREAMING_MODE` env var in full app.
+
+### Key Components
+- **Producer-Consumer Pattern**: AI yields text chunks → buffered to sentences → Kokoro generates audio → PyAudio streams in 1024-sample chunks.
+- **Concurrency**: Threads overlap processes; no disk I/O for real-time playback.
+- **Dependencies**: Requires `pyaudio`, `kokoro`, `google-genai`. Install via `uv` or pip.
+
+### Testing Commands
+- **Standalone Streaming Test**: `uv run python test_pyaudio.py` – Tests full pipeline with hardcoded input ("Tell me a short story about AI."). Expects audio playback (if device available); monitors latency.
+- **Integrated App Test**: `uv run STREAMING_MODE=true TEST_MODE=true python main.py` – Runs full app with streaming; uses env vars for modes.
+- **Troubleshooting**: Check `GEMINI_API_KEY` env var. In headless env, audio may not play (ALSA warnings expected). Measure time for concurrency validation.
+
+### Benefits
+- Eliminates long waits by overlapping AI/TTS/playback.
+- Sentence-level chunking maintains TTS quality.
+- Default streaming reduces perceived latency.
+
+### Notes
+- Built in `test_pyaudio.py` for isolation; merge to `main.py` for production.
+- No IPython dependencies; CLI-compatible.
+- If issues, verify PyAudio installation and audio device.
