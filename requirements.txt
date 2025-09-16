@@ -5,3 +5,4 @@ ollama
 librosa
 google-genai
 SpeechRecognition
+pyaudio
